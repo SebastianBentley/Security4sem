@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="CodeExamBackend:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>CodeExamBackend</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="CodeExamBackend-1.0.1.war">
+      <element id="artifact" artifact-name="CodeExamBackend:war exploded" />
+    </root>
+  </artifact>
+</component>
