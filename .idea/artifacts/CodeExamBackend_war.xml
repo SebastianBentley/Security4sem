@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="CodeExamBackend-1.0.1.war">
+    <root id="archive" name="Security-startcode-1.0.1.war">
       <element id="artifact" artifact-name="CodeExamBackend:war exploded" />
     </root>
   </artifact>

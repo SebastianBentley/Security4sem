@@ -99,14 +99,10 @@ public class LoginEndpoint {
     public Response registerUser(String jsonString) throws API_Exception, AuthenticationException {
         String username;
         String password;
-        String age;
-        String weight;
         try {
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             username = json.get("username").getAsString();
             password = json.get("password").getAsString();
-            age = json.get("age").getAsString();
-            weight = json.get("weight").getAsString();
             USER_FACADE.registerUser(username, password);
         } catch (Exception e) {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
