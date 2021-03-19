@@ -96,7 +96,7 @@ public class LoginEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("registerUser")
-    public Response registerUser(String jsonString) throws API_Exception, AuthenticationException {
+    public void registerUser(String jsonString) throws API_Exception, AuthenticationException {
         String username;
         String password;
         try {
@@ -104,10 +104,11 @@ public class LoginEndpoint {
             username = json.get("username").getAsString();
             password = json.get("password").getAsString();
             USER_FACADE.registerUser(username, password);
+        } catch (IllegalAccessException a) {
+            throw new API_Exception(a.getMessage(), 400, a);
         } catch (Exception e) {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
-        } finally {
-            return login(jsonString);
+            
         }
     }
 
