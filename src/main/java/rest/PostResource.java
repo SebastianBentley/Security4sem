@@ -4,10 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dtos.PostDTO;
+import entities.Post;
 import entities.User;
 import errorhandling.API_Exception;
 import facades.PostFacade;
 import facades.UserFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -50,15 +53,7 @@ public class PostResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all")
     public String allUsers() {
-
-        EntityManager em = EMF.createEntityManager();
-        try {
-            TypedQuery<User> query = em.createQuery("select u from User u", entities.User.class);
-            List<User> users = query.getResultList();
-            return "[" + users.size() + "]";
-        } finally {
-            em.close();
-        }
+        return gson.toJson(POST_FACADE.getAllPosts());
     }
 
     @GET
@@ -83,7 +78,7 @@ public class PostResource {
         } catch (API_Exception e) {
             return e.getMessage();
         }
-        return "post created";
+        return "{\"msg\": \"Post Created\"}";
     }
 
 }
