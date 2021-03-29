@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -39,8 +40,8 @@ public class User implements Serializable {
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
 
-
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Post> postList;
     
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {
@@ -64,12 +65,8 @@ public class User implements Serializable {
     public User(String userName, String userPass) {
         this.userName = userName;
         this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt(12));
+        this.postList = new ArrayList();
     }
-
-
-
-
-
 
     public String getUserName() {
         return userName;
@@ -99,5 +96,15 @@ public class User implements Serializable {
         roleList.add(userRole);
     }
 
+    public void addPost(Post post) {
+        this.postList.add(post);
+        if (post != null) {
+            post.setUser(this);
+        }
+    }
+
+    public List<Post> getPostList() {
+        return postList;
+    }
 
 }

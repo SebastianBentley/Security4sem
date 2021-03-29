@@ -45,6 +45,11 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
      }
      try {
        UserPrincipal user = getUserPrincipalFromTokenIfValid(token);
+       //String userName = request.getPropertyNames()
+       //System.out.println(request.toString(); + "her er det");
+       
+       //user.getName();
+       
        //What if the client had logged out????
        request.setSecurityContext(new JWTSecurityContext(user, request));
      } catch (AuthenticationException | ParseException | JOSEException ex) {
@@ -81,7 +86,6 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
      }
      String roles = signedJWT.getJWTClaimsSet().getClaim("roles").toString();
      String username = signedJWT.getJWTClaimsSet().getClaim("username").toString();
-     
      String[] rolesArray = roles.split(",");
      
      return new UserPrincipal(username, rolesArray);
