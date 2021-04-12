@@ -3,10 +3,11 @@ package dtos;
 import entities.Post;
 import java.util.Date;
 
-
 public class PostDTO {
+
     private String username, post;
     private Date date;
+    private int isActive;
 
     public PostDTO() {
     }
@@ -15,6 +16,15 @@ public class PostDTO {
         this.username = post.getUser().getUserName();
         this.post = post.getPostContent();
         this.date = post.getDateCreated();
+        this.isActive = post.getIsActive();
+    }
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 
     public String getUsername() {
@@ -40,10 +50,5 @@ public class PostDTO {
     public void setDate(Date date) {
         this.date = date;
     }
-    
-    
-    
-    
-    
-    
+
 }

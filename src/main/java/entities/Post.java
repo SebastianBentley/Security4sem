@@ -37,6 +37,9 @@ public class Post implements Serializable {
     @Column(name = "post_date")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateCreated;
+    
+    @Column(name = "post_is_active")
+    private int isActive;
 
     @JoinColumn(name = "user_name", referencedColumnName = "user_name")
     @ManyToOne
@@ -45,7 +48,7 @@ public class Post implements Serializable {
     public Post(String postContent) {
         this.postContent = postContent;
         this.dateCreated = new Date();
-        
+        this.isActive=1;
     }
 
     public Post() {
@@ -74,6 +77,14 @@ public class Post implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 
 }
