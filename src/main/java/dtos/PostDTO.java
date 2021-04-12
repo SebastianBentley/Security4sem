@@ -7,7 +7,7 @@ public class PostDTO {
 
     private String username, post;
     private Date date;
-    private int isActive;
+    private Long id;
 
     public PostDTO() {
     }
@@ -16,16 +16,9 @@ public class PostDTO {
         this.username = post.getUser().getUserName();
         this.post = post.getPostContent();
         this.date = post.getDateCreated();
-        this.isActive = post.getIsActive();
+        this.id = post.getId();
     }
 
-    public int getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(int isActive) {
-        this.isActive = isActive;
-    }
 
     public String getUsername() {
         return username;
@@ -49,6 +42,14 @@ public class PostDTO {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

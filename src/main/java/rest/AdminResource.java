@@ -46,8 +46,8 @@ public class AdminResource {
     @RolesAllowed("admin")
     public String deletePost(String jsonString) {
         JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
-        long postId = json.get("post-id").getAsLong();
+        long postId = json.get("id").getAsLong();
         facade.deletePost(postId);
         return "{\"msg\":\"Post successfully deleted\"}";
-    }    
+    }
 }
