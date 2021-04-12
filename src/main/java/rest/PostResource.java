@@ -52,7 +52,7 @@ public class PostResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all")
-    public String allUsers() {
+    public String allPosts() {
         return gson.toJson(POST_FACADE.getAllPosts());
     }
 
