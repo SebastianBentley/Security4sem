@@ -74,7 +74,8 @@ public class PostResource {
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             String postContent = json.get("content").getAsString();
             String userName = json.get("username").getAsString();
-            POST_FACADE.addPost(postContent, userName);
+            String category = json.get("category").getAsString();
+            POST_FACADE.addPost(postContent, userName, category);
         } catch (API_Exception e) {
             return e.getMessage();
         }

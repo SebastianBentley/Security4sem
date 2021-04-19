@@ -9,6 +9,7 @@ import entities.Role;
 import entities.User;
 import errorhandling.API_Exception;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,7 +23,7 @@ public class PostFacade {
 
     private static EntityManagerFactory emf;
     private static PostFacade instance;
-    //private final ArrayList<String> CATEGORIES = new ArrayList["Sport"];
+    private final ArrayList<String> CATEGORIES = new ArrayList(Arrays.asList("sport", "news", "social", "wealth", "gaming"));
 
     private PostFacade() {
     }
@@ -45,7 +46,9 @@ public class PostFacade {
         if (postContent.length() < 0 || postContent.length() >= 281) {
             throw new API_Exception("Posts can only be between 0 and 281 characters");
         }
-        if ()
+        if (!CATEGORIES.contains(category.toLowerCase())) {
+            throw new API_Exception("Category does not exist");
+        }
         try {
             em.getTransaction().begin();
             User user = em.find(User.class, userName);
@@ -75,8 +78,5 @@ public class PostFacade {
             em.close();
         }
     }
-    
-    
-    
 
 }

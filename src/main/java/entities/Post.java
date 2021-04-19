@@ -45,7 +45,7 @@ public class Post implements Serializable {
     @ManyToOne
     private User user;
     
-    @Column(name = "Category")
+    @Column(name = "post_category")
     private String category;
 
     public Post(String postContent, String category) {
