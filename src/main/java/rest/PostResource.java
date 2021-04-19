@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import dtos.PostDTO;
 import entities.Post;
 import entities.User;
@@ -22,6 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import security.errorhandling.AuthenticationException;
@@ -65,6 +67,19 @@ public class PostResource {
         return "{\"msg\": \"Hello to User: " + thisuser + "\"}";
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("category/{cat}")
+    public String getCategoryPosts(@PathParam("cat") String cat){
+        try {
+            ArrayList posts = POST_FACADE.getCategoryPosts(cat);
+            return gson.toJson(posts);
+        } catch (JsonSyntaxException e) {
+            return e.getMessage();
+        }
+    }
+    
+    
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-post")

@@ -78,5 +78,21 @@ public class PostFacade {
             em.close();
         }
     }
+    
+    public ArrayList<PostDTO> getCategoryPosts(String category) {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<PostDTO> results = new ArrayList();
+        try {
+            TypedQuery<Post> query = em.createQuery("select p from Post p where p.isActive = 1 AND p.category = :category ", entities.Post.class);
+            query.setParameter("category", category);
+            List<Post> posts = query.getResultList();
+            for (Post post : posts) {
+                results.add(new PostDTO(post));
+            }
+            return results;
+        } finally {
+            em.close();
+        }
+    }
 
 }
