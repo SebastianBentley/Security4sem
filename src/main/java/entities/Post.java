@@ -44,11 +44,15 @@ public class Post implements Serializable {
     @JoinColumn(name = "user_name", referencedColumnName = "user_name")
     @ManyToOne
     private User user;
+    
+    @Column(name = "Category")
+    private String category;
 
-    public Post(String postContent) {
+    public Post(String postContent, String category) {
         this.postContent = postContent;
         this.dateCreated = new Date();
         this.isActive=1;
+        this.category = category;
     }
 
     public Post() {
@@ -94,6 +98,14 @@ public class Post implements Serializable {
 
     public void setIsActive(int isActive) {
         this.isActive = isActive;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
 }
