@@ -70,7 +70,7 @@ public class PostResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("category/{cat}")
-    public String getCategoryPosts(@PathParam("cat") String cat){
+    public String getCategoryPosts(@PathParam("cat") String cat) {
         try {
             ArrayList posts = POST_FACADE.getCategoryPosts(cat);
             return gson.toJson(posts);
@@ -78,8 +78,7 @@ public class PostResource {
             return e.getMessage();
         }
     }
-    
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-post")
@@ -97,4 +96,15 @@ public class PostResource {
         return "{\"msg\": \"Post Created\"}";
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("userpost/{name}")
+    public String getUserPost(@PathParam("name") String name) {
+        try {
+            ArrayList posts = POST_FACADE.getUserPosts(name);
+            return gson.toJson(posts);
+        } catch (JsonSyntaxException e) {
+            return e.getMessage();
+        }
+    }
 }
