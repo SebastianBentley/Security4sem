@@ -25,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import security.errorhandling.AuthenticationException;
 import errorhandling.GenericExceptionMapper;
+import java.util.regex.Pattern;
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
 
@@ -38,7 +39,7 @@ public class LoginEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(String jsonString) throws AuthenticationException, API_Exception {
+    public Response login(String jsonString) throws AuthenticationException, API_Exception, IllegalAccessException {
         String username;
         String password;
         try {
@@ -108,7 +109,7 @@ public class LoginEndpoint {
             throw new API_Exception(a.getMessage(), 400, a);
         } catch (Exception e) {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
-            
+
         }
     }
 

@@ -58,7 +58,7 @@ public class UserFacadeTest {
 
     // TODO: Delete or change this method 
     @Test
-    public void testUserName() throws AuthenticationException {
+    public void testUserName() throws AuthenticationException, IllegalAccessException {
         assertEquals("aaa", facade.getVeryfiedUser("aaa", "bbb").getUserName(), "Expects same name");
     }
 

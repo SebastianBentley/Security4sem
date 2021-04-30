@@ -24,6 +24,7 @@ public class PostFacade {
     private static EntityManagerFactory emf;
     private static PostFacade instance;
     private final ArrayList<String> CATEGORIES = new ArrayList(Arrays.asList("sport", "news", "social", "wealth", "gaming"));
+    private Pattern postPattern = Pattern.compile("[A-Za-z0-9_]+");
 
     private PostFacade() {
     }
@@ -41,7 +42,7 @@ public class PostFacade {
         return instance;
     }
 
-    public void addPost(String postContent, String userName, String category) throws API_Exception, AuthenticationException {
+    public void addPost(String postContent, String userName, String category) throws API_Exception, AuthenticationException, IllegalAccessException {
         EntityManager em = emf.createEntityManager();
         if (postContent.length() < 0 || postContent.length() >= 281) {
             throw new API_Exception("Posts can only be between 0 and 281 characters");
@@ -49,6 +50,14 @@ public class PostFacade {
         if (!CATEGORIES.contains(category.toLowerCase())) {
             throw new API_Exception("Category does not exist");
         }
+        
+        boolean valid = ((postContent != null) && postPattern.matcher(postContent).matches());
+
+        if (!valid) {
+            throw new IllegalAccessException("Username has invalid symbols, or is over 64 characters long.");
+        }
+        
+        
         try {
             em.getTransaction().begin();
             User user = em.find(User.class, userName);
@@ -78,7 +87,7 @@ public class PostFacade {
             em.close();
         }
     }
-    
+
     public ArrayList<PostDTO> getCategoryPosts(String category) {
         EntityManager em = emf.createEntityManager();
         ArrayList<PostDTO> results = new ArrayList();
@@ -94,6 +103,7 @@ public class PostFacade {
             em.close();
         }
     }
+
     public ArrayList<PostDTO> getUserPosts(String name) {
         EntityManager em = emf.createEntityManager();
         ArrayList<PostDTO> results = new ArrayList();

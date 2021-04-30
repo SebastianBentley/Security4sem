@@ -83,7 +83,7 @@ public class PostResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-post")
     @RolesAllowed("user")
-    public String addPost(String jsonString) throws API_Exception, AuthenticationException {
+    public String addPost(String jsonString) throws API_Exception, AuthenticationException, IllegalAccessException {
         try {
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             String postContent = json.get("content").getAsString();
