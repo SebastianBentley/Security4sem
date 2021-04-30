@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.com/SebastianBentley/CodeExam.svg?branch=main)](https://travis-ci.com/SebastianBentley/CodeExam)
+[![Build Status](https://www.travis-ci.com/SebastianBentley/Security4sem.svg?branch=main)](https://www.travis-ci.com/SebastianBentley/Security4sem)
+
 
 *This project is meant as start code for semester/exam projects for 3.sem*
 
