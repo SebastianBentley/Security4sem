@@ -24,7 +24,7 @@ public class PostFacade {
     private static EntityManagerFactory emf;
     private static PostFacade instance;
     private final ArrayList<String> CATEGORIES = new ArrayList(Arrays.asList("sport", "news", "social", "wealth", "gaming"));
-    private Pattern postPattern = Pattern.compile("[A-Za-z0-9_]+");
+    private Pattern postPattern = Pattern.compile("[A-Za-z0-9 ]+");
 
     private PostFacade() {
     }
