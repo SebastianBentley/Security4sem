@@ -61,7 +61,7 @@ public class LoginEndpoint {
             String captcha = HttpUtils.fetchData("https://www.google.com/recaptcha/api/siteverify?secret=" + sitekey + "&response=" + reres);
             JsonObject json = JsonParser.parseString(captcha).getAsJsonObject();
             String result = json.get("success").getAsString();
-            if (!result.equals("success")) {
+            if (!result.equals("true")) {
                 throw new AuthenticationException("Recaptcha unsuccesful");
             }
             User user = USER_FACADE.getVeryfiedUser(username, password);
