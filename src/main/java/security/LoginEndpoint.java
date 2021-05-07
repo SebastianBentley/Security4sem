@@ -26,9 +26,11 @@ import javax.ws.rs.core.Response;
 import security.errorhandling.AuthenticationException;
 import errorhandling.GenericExceptionMapper;
 import errorhandling.Log;
+import java.io.IOException;
 import java.util.regex.Pattern;
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
+import utils.HttpUtils;
 
 @Path("login")
 public class LoginEndpoint {
@@ -36,22 +38,32 @@ public class LoginEndpoint {
     public static final int TOKEN_EXPIRE_TIME = 1000 * 60 * 30; //30 min
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     public static final UserFacade USER_FACADE = UserFacade.getUserFacade(EMF);
+    
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(String jsonString) throws AuthenticationException, API_Exception, IllegalAccessException {
+    public Response login(String jsonString) throws AuthenticationException, API_Exception, IllegalAccessException, IOException {
         String username;
         String password;
+        String sitekey = System.getenv("SITE_KEY");
+        String reres;
         try {
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             username = json.get("username").getAsString();
             password = json.get("password").getAsString();
+            reres = json.get("reres").getAsString();
         } catch (Exception e) {
             throw new API_Exception("Malformed JSON Suplied", 400, e);
         }
 
         try {
+            String captcha = HttpUtils.fetchData("https://www.google.com/recaptcha/api/siteverify?secret=" + sitekey + "&response=" + reres);
+            JsonObject json = JsonParser.parseString(captcha).getAsJsonObject();
+            String result = json.get("success").getAsString();
+            if (!result.equals("success")) {
+                throw new AuthenticationException("Recaptcha unsuccesful");
+            }
             User user = USER_FACADE.getVeryfiedUser(username, password);
             String token = createToken(username, user.getRolesAsStrings());
             JsonObject responseJson = new JsonObject();
