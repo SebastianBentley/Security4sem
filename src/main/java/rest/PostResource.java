@@ -124,4 +124,16 @@ public class PostResource {
         }
         return "{\"msg\": \"Comment Created\"}";
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("all-comments/{postID}")
+    public String getAllComments(@PathParam("postID") Long postID) {
+        try {
+            ArrayList posts = POST_FACADE.getAllComments(postID);
+            return gson.toJson(posts);
+        } catch (JsonSyntaxException e) {
+            return e.getMessage();
+        }
+    }
 }

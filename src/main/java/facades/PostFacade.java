@@ -2,6 +2,7 @@ package facades;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import dtos.CommentDTO;
 import dtos.PostDTO;
 import dtos.UserDTO;
 import entities.Comment;
@@ -113,6 +114,22 @@ public class PostFacade {
             List<Post> posts = query.getResultList();
             for (Post post : posts) {
                 results.add(new PostDTO(post));
+            }
+            return results;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public ArrayList<CommentDTO> getAllComments(Long postID) {
+        EntityManager em = emf.createEntityManager();
+        ArrayList<CommentDTO> results = new ArrayList();
+        try {
+            TypedQuery<Comment> query = em.createQuery("select p from Comment p where p.post.id = :postID ", entities.Comment.class);
+            query.setParameter("postID", postID);
+            List<Comment> comments = query.getResultList();
+            for (Comment comment : comments) {
+                results.add(new CommentDTO(comment));
             }
             return results;
         } finally {
