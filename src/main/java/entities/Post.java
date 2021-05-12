@@ -6,7 +6,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -45,6 +49,9 @@ public class Post implements Serializable {
     @ManyToOne
     private User user;
     
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+    private List<Comment> commentList;
+    
     @Column(name = "post_category")
     private String category;
 
@@ -53,6 +60,7 @@ public class Post implements Serializable {
         this.dateCreated = new Date();
         this.isActive=1;
         this.category = category;
+        this.commentList = new ArrayList<>();        
     }
 
     public Post() {
@@ -106,6 +114,17 @@ public class Post implements Serializable {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+    
+    public void addComment(Comment comment) {
+        this.commentList.add(comment);
+        if (comment != null) {
+            comment.setPost(this);
+        }
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
 }

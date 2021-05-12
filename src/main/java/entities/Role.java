@@ -9,10 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-/**
- *
- * @author Plaul
- */
+
 @Entity
 @Table(name = "roles")
 public class Role implements Serializable {

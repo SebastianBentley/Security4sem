@@ -43,6 +43,9 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Post> postList;
     
+    @OneToOne(mappedBy = "user")
+    private Comment user_comment; 
+    
     public List<String> getRolesAsStrings() {
         if (roleList.isEmpty()) {
             return null;
@@ -107,4 +110,11 @@ public class User implements Serializable {
         return postList;
     }
 
+    public Comment getUser_comment() {
+        return user_comment;
+    }
+
+    public void setUser_comment(Comment user_comment) {
+        this.user_comment = user_comment;
+    }
 }
