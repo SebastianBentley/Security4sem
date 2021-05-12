@@ -107,4 +107,21 @@ public class PostResource {
             return e.getMessage();
         }
     }
+    
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("add-comment")
+    @RolesAllowed("user")
+    public String addComment(String jsonString) throws API_Exception, AuthenticationException, IllegalAccessException {
+        try {
+            JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
+            String userName = json.get("username").getAsString();
+            String comContent = json.get("comContent").getAsString();
+            Long postID = json.get("postID").getAsLong();
+            POST_FACADE.addComment(userName, comContent, postID);
+        } catch (API_Exception e) {
+            return e.getMessage();
+        }
+        return "{\"msg\": \"Comment Created\"}";
+    }
 }

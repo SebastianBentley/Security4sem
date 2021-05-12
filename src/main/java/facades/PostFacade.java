@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dtos.PostDTO;
 import dtos.UserDTO;
+import entities.Comment;
 import entities.Post;
 import entities.Role;
 import entities.User;
@@ -66,6 +67,37 @@ public class PostFacade {
             } else {
                 Post post = new Post(postContent, category);
                 user.addPost(post);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void addComment(String userName, String comContent, Long postID) throws API_Exception, AuthenticationException {
+        EntityManager em = emf.createEntityManager();
+        if (comContent.length() < 0 || comContent.length() >= 281) {
+            throw new API_Exception("Posts can only be between 0 and 281 characters");
+        }
+        
+        boolean valid = ((comContent != null) && postPattern.matcher(comContent).matches());
+
+        if (!valid) {
+            throw new API_Exception("Username has invalid symbols, or is over 64 characters long, or comment has invalid symbols.");
+        }
+        try {
+            em.getTransaction().begin();
+            User user = em.find(User.class, userName);
+            Post post = em.find(Post.class, postID);
+            if (user == null) {
+                throw new AuthenticationException("User with the username provided does not exist");
+            } else if(post == null) {
+                throw new API_Exception("Post does not exist");
+            } else {
+                Comment comment = new Comment(comContent);
+                comment.setUser(user);
+                post.addComment(comment);
+                
             }
             em.getTransaction().commit();
         } finally {
