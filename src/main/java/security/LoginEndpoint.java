@@ -26,7 +26,6 @@ import javax.ws.rs.core.Response;
 import security.errorhandling.AuthenticationException;
 import errorhandling.GenericExceptionMapper;
 import java.io.IOException;
-import java.util.regex.Pattern;
 import javax.persistence.EntityManagerFactory;
 import utils.EMF_Creator;
 import utils.HttpUtils;
@@ -124,5 +123,5 @@ public class LoginEndpoint {
 
         }
     }
-
+    
 }

@@ -1,8 +1,6 @@
 package security;
 
 import java.security.SecureRandom;
-import java.util.Properties;
-import javax.persistence.Persistence;
 
 /* This generates a secure random per execution of the server
  * A server restart, will generate a new key, making all existing tokens invalid

@@ -5,18 +5,17 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import dtos.PostDTO;
-import entities.Post;
-import entities.User;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSVerifier;
+import com.nimbusds.jose.crypto.MACVerifier;
+import com.nimbusds.jwt.SignedJWT;
 import errorhandling.API_Exception;
 import facades.PostFacade;
-import facades.UserFacade;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import javax.annotation.security.RolesAllowed;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -24,8 +23,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
+import security.SharedSecret;
 import security.errorhandling.AuthenticationException;
 import utils.EMF_Creator;
 
@@ -83,11 +84,11 @@ public class PostResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-post")
     @RolesAllowed("user")
-    public String addPost(String jsonString) throws API_Exception, AuthenticationException, IllegalAccessException {
+    public String addPost(@Context HttpHeaders headers, String jsonString) throws API_Exception, AuthenticationException, IllegalAccessException, JOSEException, ParseException {
         try {
+            String userName = checkUser(headers);
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             String postContent = json.get("content").getAsString();
-            String userName = json.get("username").getAsString();
             String category = json.get("category").getAsString();
             POST_FACADE.addPost(postContent, userName, category);
         } catch (API_Exception e) {
@@ -107,15 +108,15 @@ public class PostResource {
             return e.getMessage();
         }
     }
-    
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Path("add-comment")
     @RolesAllowed("user")
-    public String addComment(String jsonString) throws API_Exception, AuthenticationException, IllegalAccessException {
+    public String addComment(@Context HttpHeaders headers, String jsonString) throws API_Exception, AuthenticationException, IllegalAccessException, JOSEException, ParseException {
         try {
+            String userName = checkUser(headers);
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
-            String userName = json.get("username").getAsString();
             String comContent = json.get("comContent").getAsString();
             Long postID = json.get("postID").getAsLong();
             POST_FACADE.addComment(userName, comContent, postID);
@@ -124,7 +125,7 @@ public class PostResource {
         }
         return "{\"msg\": \"Comment Created\"}";
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("all-comments/{postID}")
@@ -134,6 +135,22 @@ public class PostResource {
             return gson.toJson(posts);
         } catch (JsonSyntaxException e) {
             return e.getMessage();
+        }
+    }
+
+    private String checkUser(@Context HttpHeaders headers) throws JOSEException, ParseException, AuthenticationException {
+        String token = headers.getRequestHeader("x-access-token").get(0);
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        //Is it a valid token (generated with our shared key)
+        JWSVerifier verifier = new MACVerifier(SharedSecret.getSharedKey());
+        if (signedJWT.verify(verifier)) {
+            if (new Date().getTime() > signedJWT.getJWTClaimsSet().getExpirationTime().getTime()) {
+                throw new AuthenticationException("Your Token is no longer valid");
+            }
+            String username = signedJWT.getJWTClaimsSet().getClaim("username").toString();
+            return username;
+        } else {
+            throw new JOSEException("User could not be extracted from token");
         }
     }
 }

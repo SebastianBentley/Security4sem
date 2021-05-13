@@ -1,7 +1,6 @@
 package dtos;
 
 import entities.Comment;
-import entities.Post;
 import java.util.Date;
 
 public class CommentDTO {

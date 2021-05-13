@@ -1,13 +1,9 @@
 package facades;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import dtos.CommentDTO;
 import dtos.PostDTO;
-import dtos.UserDTO;
 import entities.Comment;
 import entities.Post;
-import entities.Role;
 import entities.User;
 import errorhandling.API_Exception;
 import java.util.ArrayList;
@@ -16,8 +12,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import security.errorhandling.AuthenticationException;
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.TypedQuery;
 
