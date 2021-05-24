@@ -3,21 +3,18 @@ package facades;
 import entities.Post;
 import entities.Role;
 import entities.User;
-import errorhandling.API_Exception;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import security.errorhandling.AuthenticationException;
 
+@Disabled
 public class AdminFacadeTest {
 
     private static EntityManagerFactory emf;
@@ -77,7 +74,7 @@ public class AdminFacadeTest {
     }
 
     @Test
-    public void deleteUser() {
+    public void deactivatePost() {
         int postSize = postfacade.getUserPosts("aaa").size();
         facade.deletePost(1);
         int newPostSize = postfacade.getUserPosts("aaa").size();
