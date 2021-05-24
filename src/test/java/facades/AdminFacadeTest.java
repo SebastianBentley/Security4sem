@@ -11,10 +11,8 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled
 public class AdminFacadeTest {
 
     private static EntityManagerFactory emf;
@@ -22,6 +20,7 @@ public class AdminFacadeTest {
     private static PostFacade postfacade;
     private User userAdmin;
     private User userUser;
+    private Post post;
 
     public AdminFacadeTest() {
     }
@@ -59,7 +58,7 @@ public class AdminFacadeTest {
             userAdmin = new User("admin", "adminpassword");
             userAdmin.addRole(adminRole);
             em.persist(userAdmin);
-            Post post = new Post("Test", "gaming");
+            post = new Post("Test", "gaming");
             userUser.addPost(post);
             em.persist(userUser);
             em.getTransaction().commit();
@@ -76,7 +75,7 @@ public class AdminFacadeTest {
     @Test
     public void deactivatePost() {
         int postSize = postfacade.getUserPosts("aaa").size();
-        facade.deletePost(1);
+        facade.deletePost(post.getId());
         int newPostSize = postfacade.getUserPosts("aaa").size();
         assertEquals(postSize - 1, newPostSize);
     }
