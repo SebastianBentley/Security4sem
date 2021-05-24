@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-public class LoginEndpointTest {
+public class AdminResourceTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
@@ -102,29 +102,19 @@ public class LoginEndpointTest {
 
     @Test
     public void serverIsRunning() {
-        given().when().get("/user").then().statusCode(200);
+        given().when().get("/admin").then().statusCode(200);
     }
-
-    @Test
-    public void testRestNoAuthenticationRequired() {
-        given()
-                .contentType("application/json")
-                .when()
-                .get("/user/").then()
-                .statusCode(200)
-                .body("msg", equalTo("Hello anonymous"));
-    }
-
+    
     @Test
     public void userNotAuthenticated() {
         logOut();
         given()
                 .contentType("application/json")
                 .when()
-                .get("/user/user").then()
-                .statusCode(403)
-                .body("code", equalTo(403))
-                .body("message", equalTo("Not authenticated - do login"));
+                .get("/admin/delete-post").then()
+                .statusCode(405)
+                .body("code", equalTo(405));
+               
     }
-
+  
 }

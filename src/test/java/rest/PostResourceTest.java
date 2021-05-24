@@ -1,5 +1,6 @@
 package rest;
 
+import entities.Post;
 import entities.User;
 import entities.Role;
 
@@ -22,7 +23,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
-public class LoginEndpointTest {
+public class PostResourceTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
@@ -68,11 +69,12 @@ public class LoginEndpointTest {
             em.createQuery("DELETE from Post").executeUpdate();
             em.createQuery("delete from User").executeUpdate();
             em.createQuery("delete from Role").executeUpdate();
-
             Role userRole = new Role("user");
             User user = new User("user", "test");
             user.addRole(userRole);
             em.persist(userRole);
+            Post post = new Post("Test", "gaming");
+            user.addPost(post);
             em.persist(user);
             em.getTransaction().commit();
         } finally {
@@ -102,29 +104,29 @@ public class LoginEndpointTest {
 
     @Test
     public void serverIsRunning() {
-        given().when().get("/user").then().statusCode(200);
+        given().when().get("/post").then().statusCode(200);
     }
 
     @Test
-    public void testRestNoAuthenticationRequired() {
-        given()
-                .contentType("application/json")
-                .when()
-                .get("/user/").then()
-                .statusCode(200)
-                .body("msg", equalTo("Hello anonymous"));
-    }
-
-    @Test
-    public void userNotAuthenticated() {
+    public void allPostIsRunning() {
         logOut();
         given()
                 .contentType("application/json")
                 .when()
-                .get("/user/user").then()
-                .statusCode(403)
-                .body("code", equalTo(403))
-                .body("message", equalTo("Not authenticated - do login"));
+                .get("/post/all").then()
+                .statusCode(200);
+             
+    }
+
+    @Test
+    public void categoryIsRunning() {
+        logOut();
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/post/category/news").then()
+                .statusCode(200);
+        
     }
 
 }
