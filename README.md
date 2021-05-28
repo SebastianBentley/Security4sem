@@ -1,14 +1,3 @@
 [![Build Status](https://www.travis-ci.com/SebastianBentley/Security4sem.svg?branch=main)](https://www.travis-ci.com/SebastianBentley/Security4sem)
 
-
-*This project is meant as start code for semester/exam projects for 3.sem*
-
-### Preconditions
-*In order to use this code, you should have a docker running, and internet access for extern endpoints*
-*You also need to create a local database called 3semSecurity1 and one called startcode_test*
-
-# How to use
-- Persist users and admin to database, to get entity tables.
-- Run project using tomcat 9.
-- Using Postman, test if you can login with url/login with a user or admin object in header.
-- Test if you can acces endpoints /api/info/user, /api/info/admin and api/info/extern.
+*This project is the exam project for 4 sem security electives*
